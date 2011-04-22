@@ -1,0 +1,6 @@
+C:\Work\CSC480\Assignment2\Assignment2\bin\Debug\CSC480.Homework2.exe
+C:\Work\CSC480\Assignment2\Assignment2\bin\Debug\CSC480.Homework2.pdb
+C:\Work\CSC480\Assignment2\Assignment2\bin\Debug\C5.dll
+C:\Work\CSC480\Assignment2\Assignment2\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Work\CSC480\Assignment2\Assignment2\obj\x86\Debug\CSC480.Homework2.exe
+C:\Work\CSC480\Assignment2\Assignment2\obj\x86\Debug\CSC480.Homework2.pdb

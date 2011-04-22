@@ -1,0 +1,14 @@
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\bin\Debug\CSC480.Homework2.exe
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\bin\Debug\CSC480.Homework2.pdb
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\CSC480.Homework2.exe
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\CSC480.Homework2.pdb
+c:\users\rick\documents\visual studio 2010\Projects\CSC480.Homework2\CSC480.Homework2\bin\Debug\C5.dll
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\CSC480.Homework2.exe
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\CSC480.Homework2.pdb
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\bin\Debug\CSC480.Homework2.exe
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\bin\Debug\CSC480.Homework2.pdb
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\bin\Debug\C5.dll
+C:\Users\Rick\Documents\My Dropbox\DePaul\CSC480\Assignments\Assignment2\CSC480.Homework2\CSC480.Homework2\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Work\CSC480\Assignment2\Assignment2\obj\x86\Debug\CSC480.Homework2.exe
+C:\Work\CSC480\Assignment2\Assignment2\obj\x86\Debug\CSC480.Homework2.pdb
