@@ -17,15 +17,15 @@ namespace CSC480.Homework2
             int nextRunPathCost = 0;
 
             // create the root node as starting point
-            Node node = new Node() 
+            Node node = new Node()
             {
-                State = problem.InitialState, 
-                Action = new Action() 
-                { 
-                    StepCost = 0, 
-                    DestState = problem.InitialState 
-                },                
-                Parent = null 
+                State = problem.InitialState,
+                Action = new Action()
+                {
+                    StepCost = 0,
+                    DestState = problem.InitialState
+                },
+                Parent = null
             };
 
             // creat the frontier and the explored set
@@ -34,57 +34,61 @@ namespace CSC480.Homework2
             HashSet<string> explored = new HashSet<string>();
 
             while (true)
-            {                
-                node = GetLowestCostFrontierNode(frontier);
+            {
+                node = RemoveLowestCostFrontierNode(frontier);
                 if (node == null)
                 {
                     // if we have 'deeper' nodes (from a cost standpoint) run the search recursively, otherwise return null (no solution)
                     return (nextRunPathCost > maxCost) ? Search(problem, nextRunPathCost) : null;
                 }
 
-                Console.Write("Checking: {0}", node);
-                if (node.PathCost > maxCost)
-                {
-                    if (nextRunPathCost == 0) nextRunPathCost = node.PathCost;
-                    Console.WriteLine("--Exceeds Cost");                    
-                }
-                else
-                {
-                    // if this node is the solution, return it
-                    if (problem.GoalTest(node.State)) return node;
+                if(node.State != "ROOT")
+                    Console.WriteLine(node);
 
-                    Console.WriteLine("++Added");
-                    explored.Add(node.State);
+                // if this node is the solution, return it
+                if (problem.GoalTest(node.State)) return node;
 
-                    // run throught the node's children, adding them to the frontier (or updating existing paths in the frontier if there is a cost improvement)
-                    foreach (Action action in problem.Actions(node.State))
+                explored.Add(node.State);
+
+                // run throught the node's children, adding them to the frontier (or updating existing paths in the frontier if there is a cost improvement)
+                foreach (Action action in problem.Actions(node.State))
+                {
+                    // new frontier node
+                    Node newNode = new Node() { State = action.DestState, Action = action, Parent = node };
+                    Console.Write("Checking: {0}", newNode);
+
+                    if (!explored.Contains(action.DestState) && !frontier.ContainsKey(action.DestState))
                     {
-                        if (!explored.Contains(action.DestState) && !frontier.ContainsKey(action.DestState))
+                        if (newNode.PathCost <= maxCost)
                         {
-                            // new frontier node
-                            Node newNode = new Node() { State = action.DestState, Action = action, Parent = node };                            
+                            Console.WriteLine("++Added");
                             frontier.Add(action.DestState, newNode);
-                            Console.WriteLine("-- new frontier node: {0}", newNode);
                         }
                         else
                         {
-                            Node frontierNode = GetMatchingFrontierNode(frontier, action.DestState);
-                            if (frontierNode != null && frontierNode.PathCost > (node.PathCost + action.StepCost))
-                            {
-                                int initialCost = frontierNode.PathCost;
-                                
-                                // update the frontier node to reflect the improved path
-                                frontierNode.Action = action;
-                                frontierNode.Parent = node;
-                                Console.WriteLine("-- updated frontier node with better path: {0}", frontierNode);
-                                int newCost = frontierNode.PathCost;
-                                Console.WriteLine("-- (Cost improvement: {0} - {1} = {2})", initialCost, newCost, initialCost - newCost);
-                            }
+                            if (nextRunPathCost == 0) nextRunPathCost = newNode.PathCost;
+                            Console.WriteLine();
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("-- Been there");
+                        Node frontierNode = GetMatchingFrontierNode(frontier, action.DestState);
+                        if (frontierNode != null && frontierNode.PathCost > (node.PathCost + action.StepCost))
+                        {
+                            int initialCost = frontierNode.PathCost;
+
+                            // update the frontier node to reflect the improved path
+                            frontierNode.Action = action;
+                            frontierNode.Parent = node;
+                            Console.WriteLine("-- updated frontier node with better path: {0}", frontierNode);
+                            int newCost = frontierNode.PathCost;
+                            Console.WriteLine("-- (Cost improvement: {0} - {1} = {2})", initialCost, newCost, initialCost - newCost);
                         }
                     }
                 }
             }
-        }        
+        }
 
         private static Node GetMatchingFrontierNode(Dictionary<string, Node> frontier, string state)
         {
@@ -93,14 +97,12 @@ namespace CSC480.Homework2
 
         // todo: suboptimal approach for supporting sorting frontier by minimum path-cost
         // should implement this using a true priority queue
-        private static Node GetLowestCostFrontierNode(Dictionary<string, Node> frontier)
+        private static Node RemoveLowestCostFrontierNode(Dictionary<string, Node> frontier)
         {
-            //Node result = frontier.FirstOrDefault(n => n.Value.PathCost == frontier.Min(n => n.Value.PathCost));
-
             Node result = null;
 
             foreach (Node node in frontier.Values)
-            {                
+            {
                 if (result == null)
                 {
                     result = node;
@@ -111,7 +113,8 @@ namespace CSC480.Homework2
                 }
             }
 
-            if(result != null)
+            // if we have a node to return, remove it from the frontier
+            if (result != null)
                 frontier.Remove(result.State);
 
             return result;

@@ -9,7 +9,7 @@ namespace CSC480.Homework2
     {
         static void Main(string[] args)
         {
-            Problem p = new Problem() { InitialState="Arad", GoalState="Bucharest" };
+            Problem p = new Problem() { InitialState = "Arad", GoalState = "Bucharest" };
             Node solution = UniformCostSearch.Search(p, 0);
             PrintSolution(solution);
 

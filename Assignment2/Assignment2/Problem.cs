@@ -19,10 +19,16 @@ namespace CSC480.Homework2
         private void InitializeActions()
         {
             _actions = new Dictionary<string, List<Action>>();
+
             List<Action> actions = new List<Action>();
+
+            //actions.Add(new Action() { DestState = "Arad", StepCost = 0 });
+            //_actions.Add("ROOT", actions);
+                        
+            actions = new List<Action>();
             actions.Add(new Action() { DestState = "Zerind", StepCost = 75 });
-            actions.Add(new Action() { DestState = "Timisoara", StepCost = 118 });
             actions.Add(new Action() { DestState = "Sibiu", StepCost = 140 });
+            actions.Add(new Action() { DestState = "Timisoara", StepCost = 118 }); 
             _actions.Add("Arad", actions);
             
             actions = new List<Action>();
