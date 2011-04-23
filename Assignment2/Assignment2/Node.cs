@@ -10,18 +10,20 @@ namespace CSC480.Homework2
         public string State { get; set; }
         public Node Parent { get; set; }
         public Action Action { get; set; }
+
         public int Depth
         {
             get
             {
-                if (Parent == null) return 1;
-                return 1 + Parent.Depth;
+                // recursively calculate the depth of the current node
+                return (Parent == null) ? 1 : 1 + Parent.Depth;
             }
         }
         public int PathCost
         {
             get
             {                
+                // recursively calculate the path cost of the current node
                 return (Parent == null ? 0 : Parent.PathCost) + Problem.StepCost((Parent == null ? null : Parent.State), Action);
             }
         }
