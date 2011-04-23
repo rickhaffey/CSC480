@@ -13,7 +13,7 @@ namespace CSC480.Homework2
             Problem2 p = new Problem2() { InitialState="Arad", GoalState="Bucharest" };
 
             int maxDepth = 0;
-            Node2 solution = null;
+            Node solution = null;
             while (solution == null)
             {
                 solution = UniformCostSearch.Search(p, ++maxDepth);
@@ -24,7 +24,7 @@ namespace CSC480.Homework2
             Console.ReadLine();
         }
 
-        static void PrintSolution(Node2 node)
+        static void PrintSolution(Node node)
         {
             Console.WriteLine(" -- solution -- ");
             while (node != null)
