@@ -10,7 +10,7 @@ namespace CSC480.Homework2
         static void Main(string[] args)
         {
 
-            Problem2 p = new Problem2() { InitialState="Arad", GoalState="Bucharest" };
+            Problem p = new Problem() { InitialState="Arad", GoalState="Bucharest" };
 
             int maxDepth = 0;
             Node solution = null;

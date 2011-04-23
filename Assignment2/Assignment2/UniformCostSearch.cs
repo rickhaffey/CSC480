@@ -7,12 +7,12 @@ namespace CSC480.Homework2
 {
     public class UniformCostSearch
     {
-        public static Node Search(Problem2 problem, int maxDepth)
+        public static Node Search(Problem problem, int maxDepth)
         {
             Console.WriteLine("Starting ({0})", maxDepth);
             Node node = new Node() {
                 State = problem.InitialState, 
-                Action = new Action2() { StepCost = 0, DestState = problem.InitialState },                
+                Action = new Action() { StepCost = 0, DestState = problem.InitialState },                
                 Parent = null };
 
             Dictionary<string, Node> frontier = new Dictionary<string, Node>();
@@ -33,7 +33,7 @@ namespace CSC480.Homework2
 
                 explored.Add(node.State);
 
-                foreach (Action2 action in problem.Actions(node.State))
+                foreach (Action action in problem.Actions(node.State))
                 {
                     Console.Write(" Checking: {0}", action);
 
