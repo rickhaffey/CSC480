@@ -12,7 +12,7 @@ namespace CSC480.Homework2
             // NOTE: a couple of performance concerns:
             // - opted for simplicity over performance in the priority queue implementation -- needs review
             // - PathCost is calculated recursively (multiple times) -- this could get expensive with a deep tree
-
+            Console.WriteLine();
             Console.WriteLine("Starting iterative lengthening search (max cost: {0})", maxCost);
             int nextRunPathCost = 0;
 
