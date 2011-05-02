@@ -1,0 +1,7 @@
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\bin\Debug\CSC480.FinalProject.DevDriver.exe
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\bin\Debug\CSC480.FinalProject.DevDriver.pdb
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\bin\Debug\CSC480.FinalProject.Connect4.dll
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\bin\Debug\CSC480.FinalProject.Connect4.pdb
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\obj\x86\Debug\CSC480.FinalProject.DevDriver.exe
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.DevDriver\obj\x86\Debug\CSC480.FinalProject.DevDriver.pdb

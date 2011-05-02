@@ -1,0 +1,10 @@
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.Referee\obj\Debug\ResolveAssemblyReference.cache
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.Referee\bin\Debug\CSC480.FinalProject.Connect4.dll
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.Referee\bin\Debug\CSC480.FinalProject.Connect4.pdb
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.Referee\obj\Debug\CSC480.FinalProject.Connect4.dll
+C:\Work\CSC480\FinalProject\CSC480.FinalProject.Referee\obj\Debug\CSC480.FinalProject.Connect4.pdb
+C:\Work\CSC480\FinalProject\CSC480.FinalProject\bin\Debug\CSC480.FinalProject.Connect4.dll
+C:\Work\CSC480\FinalProject\CSC480.FinalProject\bin\Debug\CSC480.FinalProject.Connect4.pdb
+C:\Work\CSC480\FinalProject\CSC480.FinalProject\obj\Debug\ResolveAssemblyReference.cache
+C:\Work\CSC480\FinalProject\CSC480.FinalProject\obj\Debug\CSC480.FinalProject.Connect4.dll
+C:\Work\CSC480\FinalProject\CSC480.FinalProject\obj\Debug\CSC480.FinalProject.Connect4.pdb
