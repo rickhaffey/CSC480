@@ -46,6 +46,5 @@ namespace CSC480.FinalProject.Connect4
 
             return column;
         }
-
     }
 }
