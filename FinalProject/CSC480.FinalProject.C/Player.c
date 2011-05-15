@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
 
 extern int isMoveValid(struct game* g, int column);
 extern enum gameResults acceptMove(struct game* g, int player, int column);
+extern int getMove_Random(struct player* p);
+
 
 struct player initializePlayer(char* name, struct game g, int turn)
 {
@@ -17,19 +18,16 @@ struct player initializePlayer(char* name, struct game g, int turn)
 
 int getNextMove(struct player* p)
 {
-	int column = -1;
+	int column = getMove_Random(p);
+	/* int column = getMove_Naive(p); */
 
-	while(!isMoveValid(&(p->g), column))
-	{
-		column = rand() % (p->g).columns;
-	}
-
-	acceptMove(&(p->g), 1, column);
+	acceptMove(&(p->g), p->id, column);
 
 	return column;
+		
 }
 
-void noteOpponentsMove(struct player* p, int column)
+void noteOpponentsMove(struct player* p, struct player* opponent, int column)
 {
-	acceptMove(&(p->g), 2, column);
+	acceptMove(&(p->g), opponent->id, column);
 }

@@ -24,4 +24,5 @@ struct player {
 	char* name;
 	struct game g;
 	int turn;
+	int id;
 };
