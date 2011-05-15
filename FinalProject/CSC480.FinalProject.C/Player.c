@@ -1,60 +1,35 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
 
-struct player initializePlayer(char* name)
+extern int isMoveValid(struct game* g, int column);
+extern enum gameResults acceptMove(struct game* g, int player, int column);
+
+struct player initializePlayer(char* name, struct game g, int turn)
 {
 	struct player p;
+	p.name = name;
+	p.g = g;
+	p.turn = turn;
 
 	return p;
 }
 
+int getNextMove(struct player* p)
+{
+	int column = -1;
 
+	while(!isMoveValid(&(p->g), column))
+	{
+		column = rand() % (p->g).columns;
+	}
 
+	acceptMove(&(p->g), 1, column);
 
-
-
-
-/*
-
-        private Game _game;
-        private int Turn { get; set; }
-        private Random _rnd = new Random((int)DateTime.Now.Ticks);
-
-        public Player(string name)
-        {
-            Name = name;
-        }
-
-        public string Name { get; set; }
-        public void SetGameInfo(int rows, int columns, int piecesToWin, int turn, int timeLimitSeconds)
-        {
-            _game = new Game()
-            {
-                Rows = rows,
-                Columns = columns,
-                PiecesToWin = piecesToWin,
-                TimeLimitSeconds = timeLimitSeconds
-            };
-            _game.Initialize();
-
-            Turn = turn;
-        }
-
-        public void NoteOpponentsMove(int column)
-        {
-            _game.AcceptMove(2, column);
-        }
-
-        public int GetNextMove()
-        {
-            int column = -1;
-            while(!_game.IsMoveValid(column))
-                column = _rnd.Next(_game.Columns);
-
-            _game.AcceptMove(1, column);
-
-            return column;
-        }
-
+	return column;
 }
- */
+
+void noteOpponentsMove(struct player* p, int column)
+{
+	acceptMove(&(p->g), 2, column);
+}

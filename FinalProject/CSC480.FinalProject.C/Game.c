@@ -21,9 +21,9 @@ struct game initializeGame(int rows, int columns, int piecesToWin, int timeLimit
 	return g;
 }
 
-char* getCellDisplayValue(struct game g, int row, int column)
+char* getCellDisplayValue(struct game* g, int row, int column)
 {
-	int cellValue = g.board[row][column];
+	int cellValue = g->board[row][column];
 	switch(cellValue)
 	{
 	case 0:
@@ -39,27 +39,27 @@ char* getCellDisplayValue(struct game g, int row, int column)
 }
 
 
-int isMoveValid(struct game g, int column)
+int isMoveValid(struct game* g, int column)
 {
-	if(column < 0 || column > g.columns - 1) return FALSE;
+	if(column < 0 || column > g->columns - 1) return FALSE;
 
-	return (g.board[0][column] == 0);
+	return (g->board[0][column] == 0);
 }
 
 
-int isBoardADraw(struct game g)
+int isBoardADraw(struct game* g)
 {
 	int c;
-	for(c = 0; c < g.columns; c++)
+	for(c = 0; c < g->columns; c++)
 	{
-		if(g.board[0][c] == 0) return FALSE;
+		if(g->board[0][c] == 0) return FALSE;
 	}
 
 	return TRUE;
 }
 
 
-enum gameResults acceptMove(struct game g, int player, int column)
+enum gameResults acceptMove(struct game* g, int player, int column)
 {
 	int row;
 
@@ -73,11 +73,11 @@ enum gameResults acceptMove(struct game g, int player, int column)
 		}
 	}
 
-	for(row = g.rows - 1; row >= 0; row--)
+	for(row = g->rows - 1; row >= 0; row--)
 	{
-		if(g.board[row][column] == 0)
+		if(g->board[row][column] == 0)
 		{
-			g.board[row][column] = player;
+			g->board[row][column] = player;
 			return evaluateBoard(g, player, row, column);
 		}
 	}
@@ -85,18 +85,18 @@ enum gameResults acceptMove(struct game g, int player, int column)
 	return ERROR;
 }
 
-enum gameResults evaluateHorizontal(struct game g, int player, int row)
+enum gameResults evaluateHorizontal(struct game* g, int player, int row)
 {
 	int count = 0;
 	int c;
 
 	// check horizontal
-	for (c = 0; c < g.columns; c++)
+	for (c = 0; c < g->columns; c++)
 	{
-		if (g.board[row][c] == player)
+		if (g->board[row][c] == player)
 		{
 			++count;
-			if (count >= g.piecesToWin) 
+			if (count >= g->piecesToWin) 
 			{
 				switch(player){
 				case 1: return WIN1;
@@ -115,18 +115,18 @@ enum gameResults evaluateHorizontal(struct game g, int player, int row)
 }
 
 
-enum gameResults evaluateVertical(struct game g, int player, int column)
+enum gameResults evaluateVertical(struct game* g, int player, int column)
 {
 	int count = 0;
 	int r;
 
 	// check vertical
-	for (r = 0; r < g.rows; r++)
+	for (r = 0; r < g->rows; r++)
 	{
-		if (g.board[r][column] == player)
+		if (g->board[r][column] == player)
 		{
 			++count;
-			if (count >= g.piecesToWin)
+			if (count >= g->piecesToWin)
 			{
 				switch(player)
 				{
@@ -146,24 +146,24 @@ enum gameResults evaluateVertical(struct game g, int player, int column)
 }
 
 
-enum gameResults evaluateDiagonal1(struct game g, int player, int row, int column)
+enum gameResults evaluateDiagonal1(struct game* g, int player, int row, int column)
 {
 	int count = 0;
 	int r = row;
 	int c = column;
 
-	while (r > 0 && c < (g.columns - 1))
+	while (r > 0 && c < (g->columns - 1))
 	{
 		r--;
 		c++;
 	}
 
-	while (r <= (g.rows - 1) && c >= 0)
+	while (r <= (g->rows - 1) && c >= 0)
 	{
-		if (g.board[r][c] == player)
+		if (g->board[r][c] == player)
 		{
 			++count;
-			if (count >= g.piecesToWin) 
+			if (count >= g->piecesToWin) 
 			{
 				switch(player)
 				{
@@ -185,7 +185,7 @@ enum gameResults evaluateDiagonal1(struct game g, int player, int row, int colum
 	return IN_PROGRESS;
 }
 
-enum gameResults evaluateDiagonal2(struct game g, int player, int row, int column)
+enum gameResults evaluateDiagonal2(struct game* g, int player, int row, int column)
 {
 	int count = 0;
 	int r = row;
@@ -197,13 +197,13 @@ enum gameResults evaluateDiagonal2(struct game g, int player, int row, int colum
 		c--;
 	}
 
-	while (r >= 0 && r <= (g.rows - 1) && c >= 0 && c <= (g.columns - 1))
+	while (r >= 0 && r <= (g->rows - 1) && c >= 0 && c <= (g->columns - 1))
 	{
 
-		if (g.board[r][c] == player)
+		if (g->board[r][c] == player)
 		{
 			++count;
-			if (count >= g.piecesToWin) 
+			if (count >= g->piecesToWin) 
 			{
 				switch(player)
 				{
@@ -225,7 +225,7 @@ enum gameResults evaluateDiagonal2(struct game g, int player, int row, int colum
 	return IN_PROGRESS;
 }
 
-enum gameResults evaluateBoard(struct game g, int player, int row, int column)
+enum gameResults evaluateBoard(struct game* g, int player, int row, int column)
 {
 	// NOTE: This only evaluates possible wins associatd with the current move            
 	enum gameResults winResult;
@@ -252,7 +252,7 @@ enum gameResults evaluateBoard(struct game g, int player, int row, int column)
 }
 
 
-void displayBoard(struct game g)
+void displayBoard(struct game* g)
 {
 	int c, r;
 
@@ -260,18 +260,18 @@ void displayBoard(struct game g)
 	printf(LEFT_MARGIN);
 
 
-	for(c = 0; c < g.columns; c++)
+	for(c = 0; c < g->columns; c++)
 	{
 		printf(" _");
 	}
 
 	printf("\n");
 
-	for(r = 0; r < g.rows; r++)
+	for(r = 0; r < g->rows; r++)
 	{
 		printf(LEFT_MARGIN);
 
-		for(c = 0; c < g.columns; c++)
+		for(c = 0; c < g->columns; c++)
 		{
 			printf("|%s", getCellDisplayValue(g, r, c));
 		}
@@ -283,10 +283,4 @@ void displayBoard(struct game g)
 }
 
 
-void main()
-{
-	struct game g;
-	g = initializeGame(6, 7, 4, 15);
-	displayBoard(g);
-}
 
