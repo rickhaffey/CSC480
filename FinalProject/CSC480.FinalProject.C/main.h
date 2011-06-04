@@ -26,3 +26,13 @@ struct player {
 	int turn;
 	int id;
 };
+
+
+enum gameResults acceptMove(struct game* g, int playerId, int column);
+int getMove_Naive(struct player* p);
+int getMove_Random(struct player* p);
+int getNextMove(struct player* p);
+int isMoveValid(struct game* g, int column);
+struct game initializeGame(int rows, int columns, int piecesToWin, int timeLimitSeconds);
+void displayBoard(struct game* g);
+void noteOpponentsMove(struct player* p, struct player* opponent, int column);

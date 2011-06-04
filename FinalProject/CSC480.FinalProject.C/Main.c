@@ -3,11 +3,6 @@
 #include <time.h>
 #include "main.h"
 
-extern void displayBoard(struct game* g);
-extern struct game initializeGame(int rows, int columns, int piecesToWin, int timeLimitSeconds);
-extern getNextMove(struct player* p);
-extern void noteOpponentsMove(struct player* p, struct player* opponent, int column);
-
 void main()
 {
 	struct game g;
@@ -32,7 +27,7 @@ void main()
 	{
 		printf("...player 1's move...\n");
 		move = getNextMove(&p1);
-		result = acceptMove(&g, 1, move);
+		result = acceptMove(&g, p1.id, move);
 		noteOpponentsMove(&p1, &p2, move);
 		displayBoard(&g);		
 
@@ -40,7 +35,7 @@ void main()
 		{
 			printf("...player 2's move...\n");
 			move = getNextMove(&p2);
-			result = acceptMove(&g, 2, move);
+			result = acceptMove(&g, p2.id, move);
 			noteOpponentsMove(&p2, &p1, move);
 
 			displayBoard(&g);		

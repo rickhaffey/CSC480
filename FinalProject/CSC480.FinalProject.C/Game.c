@@ -58,33 +58,6 @@ int isBoardADraw(struct game* g)
 	return TRUE;
 }
 
-
-enum gameResults acceptMove(struct game* g, int player, int column)
-{
-	int row;
-
-	if(!isMoveValid(g, column))
-	{
-		switch(player)
-		{
-		case 1: return INVALID_MOVE1;
-		case 2: return INVALID_MOVE2;
-		default: return ERROR;
-		}
-	}
-
-	for(row = g->rows - 1; row >= 0; row--)
-	{
-		if(g->board[row][column] == 0)
-		{
-			g->board[row][column] = player;
-			return evaluateBoard(g, player, row, column);
-		}
-	}
-
-	return ERROR;
-}
-
 enum gameResults evaluateHorizontal(struct game* g, int player, int row)
 {
 	int count = 0;
@@ -251,6 +224,31 @@ enum gameResults evaluateBoard(struct game* g, int player, int row, int column)
 	return IN_PROGRESS;
 }
 
+enum gameResults acceptMove(struct game* g, int player, int column)
+{
+	int row;
+
+	if(!isMoveValid(g, column))
+	{
+		switch(player)
+		{
+		case 1: return INVALID_MOVE1;
+		case 2: return INVALID_MOVE2;
+		default: return ERROR;
+		}
+	}
+
+	for(row = g->rows - 1; row >= 0; row--)
+	{
+		if(g->board[row][column] == 0)
+		{
+			g->board[row][column] = player;
+			return evaluateBoard(g, player, row, column);
+		}
+	}
+
+	return ERROR;
+}
 
 void displayBoard(struct game* g)
 {

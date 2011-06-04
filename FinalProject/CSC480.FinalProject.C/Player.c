@@ -1,11 +1,6 @@
 #include <stdio.h>
 #include "main.h"
 
-extern int isMoveValid(struct game* g, int column);
-extern enum gameResults acceptMove(struct game* g, int player, int column);
-extern int getMove_Random(struct player* p);
-
-
 struct player initializePlayer(char* name, struct game g, int turn)
 {
 	struct player p;
@@ -18,8 +13,13 @@ struct player initializePlayer(char* name, struct game g, int turn)
 
 int getNextMove(struct player* p)
 {
-	int column = getMove_Random(p);
-	/* int column = getMove_Naive(p); */
+	int column;
+	switch(p->id)
+	{
+	case 1: { column = getMove_Naive(p); break; }
+	case 2: { column = getMove_Random(p); break; }
+	default: column = 0;
+	}
 
 	acceptMove(&(p->g), p->id, column);
 

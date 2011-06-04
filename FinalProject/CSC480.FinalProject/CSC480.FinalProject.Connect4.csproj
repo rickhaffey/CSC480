@@ -41,7 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
-    <Compile Include="GameResult.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="GameValueCalculator.cs" />
+    <Compile Include="InvalidMoveException.cs" />
+    <Compile Include="Minimax.cs" />
+    <Compile Include="MinimaxPlayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Referee.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -7,18 +7,17 @@ namespace CSC480.FinalProject.Connect4
 {
     public class Game
     {
-        private int[,] _board;
+        private Players[,] _board;
 
         public int Rows { get; set; }
         public int Columns { get; set; }
         public int PiecesToWin { get; set; }
         public int TimeLimitSeconds { get; set; }
-
-        public int[,] Board { get { return _board; } }
+        public Players[,] Board { get { return _board; } }
 
         public void Initialize()
         {
-            _board = new int[Rows, Columns];
+            _board = new Players[Rows, Columns];
         }
 
         public void DisplayBoard()
@@ -51,6 +50,36 @@ namespace CSC480.FinalProject.Connect4
             Console.Write(BOTTOM_MARGIN);
         }
 
+        public void DisplayBoard(System.IO.StreamWriter writer)
+        {
+            const string TOP_MARGIN = "\r\n";
+            const string LEFT_MARGIN = "\t";
+            const string BOTTOM_MARGIN = "\r\n";
+
+            writer.Write(TOP_MARGIN);
+
+            // output the top border
+            writer.Write(LEFT_MARGIN);
+            for (int c = 0; c < Columns; c++)
+            {
+                writer.Write(" _");
+            }
+            writer.WriteLine("");
+
+            for (int r = 0; r < Rows; r++)
+            {
+                writer.Write(LEFT_MARGIN);
+
+                for (int c = 0; c < Columns; c++)
+                {
+                    writer.Write(string.Format("|{0}", GetCellDisplayValue(r, c)));
+                }
+                writer.WriteLine("|");
+            }
+
+            writer.Write(BOTTOM_MARGIN);               
+        }
+
         private string GetCellDisplayValue(int row, int column)
         {
 
@@ -58,10 +87,10 @@ namespace CSC480.FinalProject.Connect4
             {
                 case 0:
                     return "_";
-                case 1:
-                    return "x";
-                case 2:
-                    return "o";
+                case Players.Black:
+                    return "b";
+                case Players.Red:
+                    return "r";
                 default:
                     throw new Exception("Unexcpected cell value.");
             }
@@ -74,16 +103,16 @@ namespace CSC480.FinalProject.Connect4
             return (_board[0, column] == 0);
         }
 
-        public GameResult AcceptMove(int player, int column)
+        public void AcceptMove(Players player, int column)
         {
             if (!IsMoveValid(column))
             {
                 switch (player)
                 {
-                    case 1:
-                        return GameResult.InvalidMove1;
-                    case 2:
-                        return GameResult.InvalidMove2;
+                    case Players.Black:
+                        throw new InvalidMoveException(GameResult.InvalidMoveBlack);
+                    case Players.Red:
+                        throw new InvalidMoveException(GameResult.InvalidMoveRed);
                     default:
                         throw new Exception("Unexpected player value");
                 }
@@ -91,121 +120,38 @@ namespace CSC480.FinalProject.Connect4
 
             for (int i = Rows - 1; i >= 0; i--)
             {
-                if (_board[i, column] == 0)
+                if (_board[i, column] == Players.None)
                 {
                     _board[i, column] = player;
-                    return EvaluateBoard(player, i, column);                    
+                    return;
                 }
             }
 
             throw new Exception("Unable to process player move.");
         }
 
-        private bool IsBoardADraw()
+        public Game Clone()
         {
-            // if we find any columns with 0 in the first row, it's not yet a draw
-            for (int c = 0; c < Columns; c++)
+            Game clone = new Game()
             {
-                if (_board[0, c] == 0) return false;
+                Rows = this.Rows,
+                Columns = this.Columns,
+                PiecesToWin = this.PiecesToWin,
+                TimeLimitSeconds = this.TimeLimitSeconds
+            };
+
+            clone.Initialize();
+
+            for (int r = 0; r < this.Rows; r++)
+            {
+                for (int c = 0; c < this.Columns; c++)
+                {
+                    clone.Board[r, c] = this.Board[r, c];
+                }
             }
 
-            return true;
+            return clone;
         }
 
-        private GameResult EvaluateBoard(int player, int row, int column)
-        {
-            // NOTE: This only evaluates possible wins associatd with the current move            
-            GameResult winResult = (player == 1) ? GameResult.Win1 : GameResult.Win2;
-            int count;
-
-            // if the row is 0, do a quick check to see if this move has generated a draw
-            if (row == 0 && IsBoardADraw())
-            {
-                return GameResult.Draw;
-            }
-
-            // check horizontal
-            count = 0;
-            for (int c = 0; c < Columns; c++)
-            {
-                if (_board[row, c] == player)
-                {
-                    ++count;
-                    if (count >= PiecesToWin) return winResult;
-                }
-                else
-                {
-                    count = 0;
-                }
-            }
-
-            // check vertical
-            count = 0;
-            for (int r = 0; r < Rows; r++)
-            {
-                if (_board[r, column] == player)
-                {
-                    ++count;
-                    if (count >= PiecesToWin) return winResult;
-                }
-                else
-                {
-                    count = 0;
-                }
-            }
-
-            // check diagonal 1
-            count = 0;
-            int r0 = row; int c0 = column;
-            while (r0 > 0 && c0 < (Columns - 1))
-            {
-                r0--;
-                c0++;
-            }
-
-            while (r0 <= (Rows - 1) && c0 >= 0)
-            {
-                if (_board[r0, c0] == player)
-                {
-                    ++count;
-                    if (count >= PiecesToWin) return winResult;
-                }
-                else
-                {
-                    count = 0;
-                }
-
-                r0++;
-                c0--;
-            }
-
-            // check diagonal 2
-            count = 0;
-            r0 = row; c0 = column;
-            while (r0 > 0 && c0 >= 0)
-            {
-                r0--;
-                c0--;
-            }
-
-            while (r0 >= 0 && r0 <= (Rows - 1) && c0 >= 0 && c0 <= (Columns - 1))
-            {
-
-                if (_board[r0, c0] == player)
-                {
-                    ++count;
-                    if (count >= PiecesToWin) return winResult;
-                }
-                else
-                {
-                    count = 0;
-                }
-
-                r0++;
-                c0++;
-            }
-
-            return GameResult.InProgress;
-        }
     }
 }
