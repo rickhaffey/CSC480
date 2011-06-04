@@ -9,6 +9,8 @@ using std::min;
 
 Minimax::Minimax(void)
 {
+	_startTime = time(NULL);
+	_timeoutThreshold = TIMEOUT_THRESHOLD;
 }
 
 
@@ -19,43 +21,88 @@ Minimax::~Minimax(void)
 
 int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 {
-	int maxValue = INT_MIN;
-	vector<int> colOptions;
-	vector<int>* actions = ACTIONS(game);
-	
-	for(unsigned int column = 0; column < actions->size(); column++)
+	vector<int> result;
+	int maxValue;
+	vector<int>* actions;
+	_maxDepth = 1;
+	int timeLimitSeconds = game->GetTimeLimitSeconds();
+
+	bool timeout = false;
+
+	while(!timeout)
 	{
-		Game* state = RESULT(game, column, ME);
-		int v;
-		if(alphaBetaPruning)
+		time_t iterationTimer = time(NULL);
+		cerr << "Running Minimax at max depth " << _maxDepth << endl;
+		vector<int> colOptions;
+		maxValue = INT_MIN;
+		actions = ACTIONS(game);
+
+		for(unsigned int column = 0; column < actions->size(); column++)
 		{
-			v = MIN_VALUE(state, 1, INT_MIN, INT_MAX);
+			Game* state = RESULT(game, column, ME);
+			int v;
+
+			if(alphaBetaPruning)
+			{
+				v = MIN_VALUE(state, 1, INT_MIN, INT_MAX);
+			}
+			else
+			{
+				v = MIN_VALUE(state, 1);
+			}
+		
+			delete state;
+
+			if(v > maxValue)
+			{
+				maxValue = v;
+				colOptions.clear();
+				colOptions.push_back(column);
+			} 
+			else if(v == maxValue)
+			{
+				colOptions.push_back(column);
+			}
+
+			// if we're within 1 second of timing out, just end this iteration
+			// and use the last level's results
+			if(IsWithinTimeoutThreshold(timeLimitSeconds))
+			{
+				timeout = true;
+				break;
+			}
+		}
+
+		// copy our result at each depth, so that we have the 'best' result so far
+		// int the event we timeout during the next depth iteration
+		if(!timeout)
+		{
+			result = colOptions;
+			cerr << "\tIteration complete.  Elapsed time: " << time(NULL) - iterationTimer << " Total: " << time(NULL) - _startTime << endl;
 		}
 		else
 		{
-			v = MIN_VALUE(state, 1);
+			cerr << "\tIteration timed out.  Elapsed time: " << time(NULL) - iterationTimer << " Total: " << time(NULL) - _startTime << endl;
 		}
 
-		delete state;
-
-		if(v > maxValue)
+		if(IsWithinTimeoutThreshold(timeLimitSeconds))
 		{
-			maxValue = v;
-			colOptions.clear();
-			colOptions.push_back(column);
-		} 
-		else if(v == maxValue)
-		{
-			colOptions.push_back(column);
+			timeout = true;
 		}
-
-		/*if (_stopwatch.Elapsed.Seconds > (game.TimeLimitSeconds - 1)) break;*/
-        
+		else
+		{
+			// run again 
+			_maxDepth++;
+		}
 	}
 
-	int c = colOptions[0]; // TODO: random selection based on the number of options
+	return result[0]; // TODO: random selection based on the number of options
+}
 
-	return c;
+bool Minimax::IsWithinTimeoutThreshold(int timeLimitSeconds)
+{
+	time_t elapsedSeconds = time(NULL) - _startTime;
+	return (timeLimitSeconds - elapsedSeconds) <= _timeoutThreshold;
 }
 
 int Minimax::MIN_VALUE(Game* game, int depth)
@@ -171,9 +218,9 @@ int Minimax::UTILITY(Game* game)
 
 bool Minimax::TERMINAL_TEST(Game* game, int depth)
 {
-	//if (_stopwatch.Elapsed.Seconds > (game.TimeLimitSeconds - 2)) return true;
+	if(IsWithinTimeoutThreshold(game->GetTimeLimitSeconds())) return true;	
 
-	if (depth >= MAX_DEPTH) return true;
+	if (depth >=_maxDepth) return true;
 	
 	switch(_gameStateEvaluator.EvaluateGameState(game))
 	{
