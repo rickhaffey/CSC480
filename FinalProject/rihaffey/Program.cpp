@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	Player p;
 	
@@ -37,6 +37,8 @@ void main(int argc, char** argv)
 	char line[1];
 	cin.getline(line, 1);
 #endif
+
+    return 0;
 }
 
 

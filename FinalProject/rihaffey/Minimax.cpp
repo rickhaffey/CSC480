@@ -196,7 +196,7 @@ int Minimax::MAX_VALUE(Game* game, int depth, int alpha, int beta)
 vector<int>* Minimax::ACTIONS(Game* game)
 {
 	vector<int>* result = new vector<int>();
-	vector<vector<char>>* board = game->GetBoard();
+	vector<vector<char> >* board = game->GetBoard();
 
 	for(int c = 0; c < game->GetColumns(); c++)
 	{
