@@ -124,7 +124,7 @@ double HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int colu
 		else if (lostPieces == (piecesToWin - 1) && ownedPieces == 1)
 		{
 			// if this is a true block, make its value fall midway between a win, and 1 away from a win
-			grandTotal += _blockValue;
+			return _blockValue;
 		}
 
 	}
@@ -144,45 +144,52 @@ double HeuristicCalculator::CalculateSouthEastValue(Game* game, int row, int col
 
 	if ((originOffset + endOffset + 1) < piecesToWin) return 0;
 
+	double grandTotal = 0.0;
 	int ownedPieces = 0;
 	int lostPieces = 0;
 	bool blocked = false;
 
 	int r  = row - originOffset;
-	for(int c = column - originOffset; c <= (column + endOffset);)
+	for(int c = column - originOffset; c <= (column + endOffset - (piecesToWin - 1)); )
 	{
-		char cellState = (*board)[r++][c++];
+		for(int offset = 0; offset < piecesToWin; offset++)
+		{
+			char cellState = (*board)[r + offset][c + offset];
 
-		if (cellState == opponent)
-		{
-			// this iteration should add 0 value
-			lostPieces++;
-			blocked = true;
+			if (cellState == opponent)
+			{
+				// this iteration should add 0 value
+				lostPieces++;
+				blocked = true;
+			}
+			else if (cellState == player)
+			{
+				ownedPieces++;
+			}
+			else
+			{
+				// do nothing if this is a blank cell
+			}
 		}
-		else if (cellState == player)
+
+		if (!blocked)
 		{
-			ownedPieces++;
+			if(ownedPieces >= piecesToWin)
+				return _winValue;
+			else
+				grandTotal += (double)(2 ^ ownedPieces);
 		}
-		else
+		else if (lostPieces == (piecesToWin - 1) && ownedPieces == 1)
 		{
-			// do nothing if this is a blank cell
+			// if this is a true block, make its value fall midway between a win, and 1 away from a win
+			return _blockValue;
 		}
+
+		r++;
+		c++;
 	}
 
-	if (!blocked)
-	{
-		if(ownedPieces >= piecesToWin)
-			return _winValue;
-		else
-			return (double)(2 ^ ownedPieces);
-	}
-	else if (lostPieces == (piecesToWin - 1) && ownedPieces == 1)
-	{
-		// if this is a true block, make its value fall midway between a win, and 1 away from a win
-		return _blockValue;
-	}
-
-	return 0;
+	return grandTotal;
 }
 
 double HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int column, char player, char opponent)
@@ -233,7 +240,7 @@ double HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int co
 		else if(lostPieces == (piecesTowin - 1) && ownedPieces == 1)
 		{
 			// if this is a true block, add our reference value to the grand total
-			grandTotal += _blockValue;
+			return _blockValue;
 		}
 	}
 
