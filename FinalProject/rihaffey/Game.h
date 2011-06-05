@@ -23,7 +23,7 @@ private:
 	int _columns;
 	int _piecesToWin;
 	int _timeLimitSeconds;
-	vector<vector<char>> _board;
+	vector<vector<char> > _board;
 
 	void InitializeBoard();
 
@@ -35,7 +35,7 @@ public:
 	int GetColumns();
 	int GetPiecesToWin();
 	int GetTimeLimitSeconds();
-	vector<vector<char>>* GetBoard();
+	vector<vector<char> >* GetBoard();
 
 	void AcceptMove(char player, int column);
 	void DisplayBoard();

@@ -39,7 +39,7 @@ int Game::GetTimeLimitSeconds()
 	return _timeLimitSeconds;
 }
 
-vector<vector<char>>* Game::GetBoard()
+vector<vector<char> >* Game::GetBoard()
 {
 	return &(_board);
 }
@@ -107,7 +107,7 @@ void Game::CopyGameBoard(Game* source)
 
 	int rows = source->GetRows();
 	int columns = source->GetColumns();
-	vector<vector<char>>* sourceBoard = source->GetBoard();
+	vector<vector<char> >* sourceBoard = source->GetBoard();
 
 	_board.resize(rows);
 	for(int r = 0; r < rows; r++)

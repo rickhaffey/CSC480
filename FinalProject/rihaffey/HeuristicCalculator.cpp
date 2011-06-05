@@ -64,7 +64,7 @@ int HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int column,
 	int piecesToWin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();
-	vector<vector<char>>* board = game->GetBoard();
+	vector<vector<char> >* board = game->GetBoard();
 
 	int grandTotal = 0;
 	int ownedPieces = 0;
@@ -117,7 +117,7 @@ int HeuristicCalculator::CalculateSouthEastValue(Game* game, int row, int column
 	int piecesToWin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();
-	vector<vector<char>>* board = game->GetBoard();
+	vector<vector<char> >* board = game->GetBoard();
 
 	int originOffset = min(row, column);
 	int endOffset = min(columns - 1 - column, rows - 1 - row);
@@ -167,7 +167,7 @@ int HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int colum
 	int piecesTowin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();
-	vector<vector<char>>* board = game->GetBoard();
+	vector<vector<char> >* board = game->GetBoard();
 
 	int grandTotal = 0;
 	int ownedPieces = 0;
