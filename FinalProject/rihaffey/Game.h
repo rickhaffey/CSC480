@@ -27,6 +27,8 @@ private:
 
 	void InitializeBoard();
 
+	bool IsMoveValid(int column);
+
 public:
 	Game(int rows, int columns, int piecesToWin, int timeLimitSeconds);
 	~Game(void);

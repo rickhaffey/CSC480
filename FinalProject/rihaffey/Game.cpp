@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 
@@ -46,7 +47,7 @@ vector<vector<char>>* Game::GetBoard()
 
 void Game::AcceptMove(char player, int column)
 {
-	// TODO: add an assert that the move is valid
+	assert(IsMoveValid(column));
 	
 	for (int i = _rows - 1; i >= 0; i--)
 	{
@@ -57,7 +58,15 @@ void Game::AcceptMove(char player, int column)
 		}
 	}
 
-	// TODO: throw an exception if we get here??	
+	// we should never get here -- assert to confirm that during debugging	
+	assert(0);	
+}
+
+bool Game::IsMoveValid(int column)
+{
+	if (column < 0 || column > GetColumns() - 1) return false;
+
+	return (_board[0][column] == EMPTY);
 }
 
 void Game::InitializeBoard()

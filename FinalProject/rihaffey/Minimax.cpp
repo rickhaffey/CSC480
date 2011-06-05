@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <assert.h>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 using std::max;
@@ -82,6 +83,10 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 		}
 		else
 		{
+			// if we timed out on our first depth iteration, make sure we have at least _something_ to work with
+			if(colOptions.size() > 0 && result.size() == 0)
+				result = colOptions;
+
 			cerr << "\tIteration timed out.  Elapsed time: " << time(NULL) - iterationTimer << " Total: " << time(NULL) - _startTime << endl;
 		}
 
@@ -96,7 +101,8 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 		}
 	}
 
-	return result[0]; // TODO: random selection based on the number of options
+	int selectionIndex = rand() % result.size();
+	return result[selectionIndex];
 }
 
 bool Minimax::IsWithinTimeoutThreshold(int timeLimitSeconds)
