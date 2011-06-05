@@ -38,8 +38,9 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 		maxValue = INT_MIN;
 		actions = ACTIONS(game);
 
-		for(unsigned int column = 0; column < actions->size(); column++)
+		for(unsigned int i = 0; i < actions->size(); i++)
 		{
+			int column = (*actions)[i];
 			Game* state = RESULT(game, column, ME);
 			int v;
 
@@ -119,8 +120,9 @@ int Minimax::MIN_VALUE(Game* game, int depth)
 	int value = INT_MAX;
 
 	vector<int>* actions = ACTIONS(game);
-	for(unsigned int column = 0; column < actions->size(); column++)
+	for(unsigned int i = 0; i < actions->size(); i++)
 	{
+		int column = (*actions)[i];
 		Game* state = RESULT(game, column, OPPONENT);
 		value = min(value, MAX_VALUE(state, ++depth));
 		delete state;
@@ -137,8 +139,9 @@ int Minimax::MIN_VALUE(Game* game, int depth, int alpha, int beta)
 	int value = INT_MAX;
 
 	vector<int>* actions = ACTIONS(game);
-	for(unsigned int column = 0; column < actions->size(); column++)
+	for(unsigned int i = 0; i < actions->size(); i++)
 	{
+		int column = (*actions)[i];
 		Game* state = RESULT(game, column, OPPONENT);
 		value = min(value, MAX_VALUE(state, ++depth, alpha, beta));
 		delete state;
@@ -160,8 +163,9 @@ int Minimax::MAX_VALUE(Game* game, int depth)
 
 	vector<int>* actions = ACTIONS(game);
 
-	for(unsigned int column = 0; column < actions->size(); column++)
+	for(unsigned int i = 0; i < actions->size(); i++)
 	{
+		int column = (*actions)[i];
 		Game* state = RESULT(game, column, ME);
 		value = max(value, MIN_VALUE(state, ++depth));
 		delete state;
@@ -179,8 +183,9 @@ int Minimax::MAX_VALUE(Game* game, int depth, int alpha, int beta)
 
 	vector<int>* actions = ACTIONS(game);
 
-	for(unsigned int column = 0; column < actions->size(); column++)
+	for(unsigned int i = 0; i < actions->size(); i++)
 	{
+		int column = (*actions)[i];
 		Game* state = RESULT(game, column, ME);
 		value = max(value, MIN_VALUE(state, ++depth, alpha, beta));
 		delete state;
