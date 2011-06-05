@@ -4,18 +4,23 @@
 class HeuristicCalculator
 {
 private:
-	int CalculatePlayerValues(Game* game, char player, char opponent);
-	int CalculateCellValue(Game* game, int row, int column, char player, char opponent);
+	double _winValue;
+	double _blockValue;
 
-	int CalculateEastWestValue(Game* game, int row, int column, char player, char opponent);
-	int CalculateSouthEastValue(Game* game, int row, int column, char player, char opponent);
-	int CalculateNorthSouthValue(Game* game, int row, int column, char player, char opponent);
-	int CalculateSouthWestValue(Game* game, int row, int column, char player, char opponent);
+	void InitializeReferenceValues(Game* game);
+
+	double CalculatePlayerValues(Game* game, char player, char opponent);
+	double CalculateCellValue(Game* game, int row, int column, char player, char opponent);
+
+	double CalculateEastWestValue(Game* game, int row, int column, char player, char opponent);
+	double CalculateSouthEastValue(Game* game, int row, int column, char player, char opponent);
+	double CalculateNorthSouthValue(Game* game, int row, int column, char player, char opponent);
+	double CalculateSouthWestValue(Game* game, int row, int column, char player, char opponent);
 
 public:
 	HeuristicCalculator(void);
 	~HeuristicCalculator(void);
 
-	int Calculate(Game* game, char player, char opponent);
+	double Calculate(Game* game, char player, char opponent);
 };
 

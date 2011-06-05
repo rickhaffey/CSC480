@@ -3,10 +3,9 @@
 #include <assert.h>
 #include <iostream>
 #include <stdlib.h>
+#include <float.h>
 
 using namespace std;
-using std::max;
-using std::min;
 
 Minimax::Minimax(void)
 {
@@ -23,7 +22,7 @@ Minimax::~Minimax(void)
 int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 {
 	vector<int> result;
-	int maxValue;
+	double maxValue;
 	vector<int>* actions;
 	_maxDepth = 1;
 	int timeLimitSeconds = game->GetTimeLimitSeconds();
@@ -33,20 +32,22 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 	while(!timeout)
 	{
 		time_t iterationTimer = time(NULL);
+#if DIAGNOSTICS
 		cerr << "Running Minimax at max depth " << _maxDepth << endl;
+#endif
 		vector<int> colOptions;
-		maxValue = INT_MIN;
+		maxValue = DBL_MIN;
 		actions = ACTIONS(game);
 
 		for(unsigned int i = 0; i < actions->size(); i++)
 		{
 			int column = (*actions)[i];
 			Game* state = RESULT(game, column, ME);
-			int v;
+			double v;
 
 			if(alphaBetaPruning)
 			{
-				v = MIN_VALUE(state, 1, INT_MIN, INT_MAX);
+				v = MIN_VALUE(state, 1, DBL_MIN, DBL_MAX);
 			}
 			else
 			{
@@ -80,7 +81,9 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 		if(!timeout)
 		{
 			result = colOptions;
+#if DIAGNOSTICS
 			cerr << "\tIteration complete.  Elapsed time: " << time(NULL) - iterationTimer << " Total: " << time(NULL) - _startTime << endl;
+#endif
 		}
 		else
 		{
@@ -88,7 +91,9 @@ int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
 			if(colOptions.size() > 0 && result.size() == 0)
 				result = colOptions;
 
+#if DIAGNOSTICS
 			cerr << "\tIteration timed out.  Elapsed time: " << time(NULL) - iterationTimer << " Total: " << time(NULL) - _startTime << endl;
+#endif
 		}
 
 		if(IsWithinTimeoutThreshold(timeLimitSeconds))
@@ -112,12 +117,12 @@ bool Minimax::IsWithinTimeoutThreshold(int timeLimitSeconds)
 	return (timeLimitSeconds - elapsedSeconds) <= _timeoutThreshold;
 }
 
-int Minimax::MIN_VALUE(Game* game, int depth)
+double Minimax::MIN_VALUE(Game* game, int depth)
 {
 	if (TERMINAL_TEST(game, depth))
 		return UTILITY(game);
 
-	int value = INT_MAX;
+	double value = DBL_MAX;
 
 	vector<int>* actions = ACTIONS(game);
 	for(unsigned int i = 0; i < actions->size(); i++)
@@ -131,12 +136,12 @@ int Minimax::MIN_VALUE(Game* game, int depth)
 	return value;
 }
 
-int Minimax::MIN_VALUE(Game* game, int depth, int alpha, int beta)
+double Minimax::MIN_VALUE(Game* game, int depth, double alpha, double beta)
 {
 	if (TERMINAL_TEST(game, depth))
 		return UTILITY(game);
 
-	int value = INT_MAX;
+	double value = DBL_MAX;
 
 	vector<int>* actions = ACTIONS(game);
 	for(unsigned int i = 0; i < actions->size(); i++)
@@ -154,12 +159,12 @@ int Minimax::MIN_VALUE(Game* game, int depth, int alpha, int beta)
 	return value;
 }
 
-int Minimax::MAX_VALUE(Game* game, int depth)
+double Minimax::MAX_VALUE(Game* game, int depth)
 {
 	if (TERMINAL_TEST(game, depth))
 		return UTILITY(game);
 
-	int value = INT_MIN;
+	double value = DBL_MIN;
 
 	vector<int>* actions = ACTIONS(game);
 
@@ -174,12 +179,12 @@ int Minimax::MAX_VALUE(Game* game, int depth)
 	return value;
 }
 
-int Minimax::MAX_VALUE(Game* game, int depth, int alpha, int beta)
+double Minimax::MAX_VALUE(Game* game, int depth, double alpha, double beta)
 {
 	if (TERMINAL_TEST(game, depth))
 		return UTILITY(game);
 
-	int value = INT_MIN;
+	double value = DBL_MIN;
 
 	vector<int>* actions = ACTIONS(game);
 
@@ -221,9 +226,9 @@ Game* Minimax::RESULT(Game* game, int column, char player)
 	return newState;
 }
 
-int Minimax::UTILITY(Game* game)
+double Minimax::UTILITY(Game* game)
 {	
-	int result = _heuristicCalculator.Calculate(game, ME, OPPONENT);
+	double result = _heuristicCalculator.Calculate(game, ME, OPPONENT);
 	return result;
 }
 
@@ -242,4 +247,14 @@ bool Minimax::TERMINAL_TEST(Game* game, int depth)
 	default:
 		return false;
 	}
+}
+
+double max(double lhs, double rhs)
+{
+	return (lhs > rhs) ? lhs : rhs;	
+}
+
+double min(double lhs, double rhs)
+{
+	return (lhs < rhs) ? lhs : rhs;	
 }

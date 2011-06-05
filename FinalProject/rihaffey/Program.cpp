@@ -17,22 +17,22 @@ int main(int argc, char** argv)
 	// if our turn is '0', send the first move
 	bool sendMove = (p.GetTurn() == 0);
 
-	int gameResult = 0;
+	int gameResultCode = 0;
 	//+int (opponent move), -1 (win), -2 (loss), -3 (tie)
-	while(gameResult != WIN && gameResult != LOSS && gameResult != DRAW)
+	while(gameResultCode != WIN && gameResultCode != LOSS && gameResultCode != DRAW)
 	{
 		if(sendMove)
 		{
 			p.SendMove();	
 		}
 
-		gameResult = p.ReadMove();
+		gameResultCode = p.ReadMove();
 		sendMove = true;
 	}
 
-	p.ReadGameResult();
+	p.ReadGameResult(gameResultCode);
 
-#if DEBUG
+#if DIAGNOSTICS
 	cerr << "Press <ENTER> to end...";
 	char line[1];
 	cin.getline(line, 1);

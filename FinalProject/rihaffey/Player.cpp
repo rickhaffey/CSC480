@@ -7,11 +7,17 @@ using namespace std;
 
 Player::Player()
 {
+	
 }
 
 Player::~Player()
 {
 	delete _game;
+	if(_trainingController != NULL)
+	{
+
+		delete _trainingController;
+	}
 }
 
 void Player::SendName()
@@ -29,6 +35,7 @@ void Player::ReadConfig()
 	cin >> rows >> columns >> pieces2Win >> _turn >> timeLimitSeconds;
 
 	_game = new Game(rows, columns, pieces2Win, timeLimitSeconds);
+	_trainingController = new TrainingController(_game);
 }
 
 int Player::ReadMove()
@@ -41,15 +48,18 @@ int Player::ReadMove()
 	{
 		_game->AcceptMove(OPPONENT, move);
 		_game->DisplayBoard();
-		HeuristicCalculator calc;
-		int value = calc.Calculate(_game, ME, OPPONENT);
 
-		
+		_trainingController->AddMove(move);
+
+#if DIAGNOSTICS
 		cerr << "\tOpponent move: " << move << endl;
-		cerr << "\tBoard value: " << value << endl;
 	}
 	else
+
 		cerr << "\tGame state: " << move << endl;
+#else
+	}
+#endif
 			
 	return move;	
 }
@@ -62,6 +72,8 @@ void Player::SendMove()
 	_game->AcceptMove(ME, move);
 	_game->DisplayBoard();
 	cout << move << endl;
+
+	_trainingController->AddMove(move);
 }
 
 int Player::GetTurn()
@@ -69,13 +81,18 @@ int Player::GetTurn()
 	return _turn;
 }
 
-void Player::ReadGameResult()
+void Player::ReadGameResult(int code)
 {
 	char line[15];
 
 	cin.getline(line, 15); // TODO : why is there a stray line coming through on std in??
 	cin.getline(line, 15);
 
+	_trainingController->AddGameResult(code, line);
+	_trainingController->Shutdown();
+
+#if DIAGNOSTICS
 	cerr << "\tGameResult: " << line << endl;
+#endif
 }
 

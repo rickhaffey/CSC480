@@ -85,8 +85,10 @@ void Game::InitializeBoard()
 
 void Game::DisplayBoard()
 {
+#if DIAGNOSTICS
 	cerr << TOP_MARGIN;
 	cerr << LEFT_MARGIN;
+
 	for (int c = 0; c < _columns; c++)
 	{
 		cerr << " _";
@@ -106,6 +108,7 @@ void Game::DisplayBoard()
 	}
 
 	cerr << BOTTOM_MARGIN;               
+#endif
 }
 
 void Game::CopyGameBoard(Game* source)

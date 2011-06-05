@@ -16,13 +16,13 @@ private:
 	int _maxDepth;
 	int _timeoutThreshold; // how many seconds short of the timeout should we abandon processing
 
-	int MIN_VALUE(Game* game, int depth);
-	int MIN_VALUE(Game* game, int depth, int alpha, int beta);
-	int MAX_VALUE(Game* game, int depth);
-	int MAX_VALUE(Game* game, int depth, int alpha, int beta);
+	double MIN_VALUE(Game* game, int depth);
+	double MIN_VALUE(Game* game, int depth, double alpha, double beta);
+	double MAX_VALUE(Game* game, int depth);
+	double MAX_VALUE(Game* game, int depth, double alpha, double beta);
 	vector<int>* ACTIONS(Game* game);
 	Game* RESULT(Game* game, int column, char player);
-	int UTILITY(Game* game);
+	double UTILITY(Game* game);
 	bool TERMINAL_TEST(Game* game, int depth);
 	bool IsWithinTimeoutThreshold(int timeLimitSeconds);
 

@@ -30,6 +30,9 @@
     <ClInclude Include="Minimax.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TrainingController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Minimax.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrainingController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
