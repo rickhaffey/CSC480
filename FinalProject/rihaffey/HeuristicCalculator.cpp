@@ -249,5 +249,60 @@ double HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int co
 
 double HeuristicCalculator::CalculateSouthWestValue(Game* game, int row, int column, char player, char opponent)
 {
-	return 0.0;
+	int piecesToWin = game->GetPiecesToWin();
+	int rows = game->GetRows();
+	int columns = game->GetColumns();
+	vector<vector<char> >* board = game->GetBoard();
+
+	int startOffset = min(rows - row - 1, column);
+	int endOffset = min(columns - column - 1, row);
+
+	if ((startOffset + endOffset + 1) < piecesToWin) return 0;
+
+	double grandTotal = 0.0;
+	int ownedPieces = 0;
+	int lostPieces = 0;
+	bool blocked = false;
+
+	int r  = row + startOffset;
+	for(int c = column - startOffset; c <= (column + endOffset - (piecesToWin - 1)); )
+	{
+		for(int offset = 0; offset < piecesToWin; offset++)
+		{
+			char cellState = (*board)[r - offset][c + offset];
+
+			if (cellState == opponent)
+			{
+				// this iteration should add 0 value
+				lostPieces++;
+				blocked = true;
+			}
+			else if (cellState == player)
+			{
+				ownedPieces++;
+			}
+			else
+			{
+				// do nothing if this is a blank cell
+			}
+		}
+
+		if (!blocked)
+		{
+			if(ownedPieces >= piecesToWin)
+				return _winValue;
+			else
+				grandTotal += (double)(2 ^ ownedPieces);
+		}
+		else if (lostPieces == (piecesToWin - 1) && ownedPieces == 1)
+		{
+			// if this is a true block, make its value fall midway between a win, and 1 away from a win
+			return _blockValue;
+		}
+
+		r--;
+		c++;
+	}
+
+	return grandTotal;
 }
