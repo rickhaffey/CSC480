@@ -9,7 +9,7 @@ using namespace std;
 
 Minimax::Minimax(void)
 {
-	_startTime = time(NULL);
+	/*_startTime = time(NULL);*/
 	_timeoutThreshold = TIMEOUT_THRESHOLD;
 }
 
@@ -19,8 +19,10 @@ Minimax::~Minimax(void)
 }
 
 
-int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning)
+int Minimax::MINIMAX_DECISION(Game* game, bool alphaBetaPruning, time_t startTime)
 {
+	_startTime = startTime;
+
 	vector<int> result;
 	double maxValue;
 	vector<int>* actions;

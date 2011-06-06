@@ -2,6 +2,8 @@
 #include <iostream>
 #include "HeuristicCalculator.h"
 #include "Minimax.h"
+#include "FirstChancePlayHandler.h"
+#include <time.h>
 
 using namespace std;
 
@@ -66,8 +68,16 @@ int Player::ReadMove()
 
 void Player::SendMove()
 {
-	Minimax minimax;
-	int move = minimax.MINIMAX_DECISION(_game, true);
+	time_t startTime = time(NULL);
+
+	FirstChancePlayHandler firstChanceHandler;
+	int move = firstChanceHandler.GetFirstChancePlay(_game);
+
+	if(move == NO_FIRST_CHANCE_PLAY)
+	{
+		Minimax minimax;
+		move = minimax.MINIMAX_DECISION(_game, true, startTime);
+	}
 
 	_game->AcceptMove(ME, move);
 	_game->DisplayBoard();

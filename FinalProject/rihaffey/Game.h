@@ -27,7 +27,6 @@ private:
 
 	void InitializeBoard();
 
-	bool IsMoveValid(int column);
 
 public:
 	Game(int rows, int columns, int piecesToWin, int timeLimitSeconds);
@@ -39,6 +38,7 @@ public:
 	int GetTimeLimitSeconds();
 	vector<vector<char> >* GetBoard();
 
+	bool IsMoveValid(int column);
 	void AcceptMove(char player, int column);
 	void DisplayBoard();
 	void CopyGameBoard(Game* source);

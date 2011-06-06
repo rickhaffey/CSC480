@@ -32,7 +32,7 @@ public:
 	Minimax(void);
 	~Minimax(void);
 
-	int MINIMAX_DECISION(Game* game, bool alphaBetaPruning);
+	int MINIMAX_DECISION(Game* game, bool alphaBetaPruning, time_t startTime);
 
 };
 

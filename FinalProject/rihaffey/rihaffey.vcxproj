@@ -61,6 +61,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FirstChancePlayHandler.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameStateEvaluator.h" />
     <ClInclude Include="HeuristicCalculator.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="TrainingController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FirstChancePlayHandler.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameStateEvaluator.cpp" />
     <ClCompile Include="HeuristicCalculator.cpp" />
