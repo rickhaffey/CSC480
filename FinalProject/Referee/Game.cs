@@ -43,8 +43,8 @@ namespace Referee
 
         public void AcceptMove(char player, int column)
         {
-
-            if (!IsMoveValid(column)) throw new InvalidMoveException();
+            if (!IsMoveValid(column)) 
+                throw new InvalidMoveException();
 
             for (int i = ROWS - 1; i >= 0; i--)
             {
