@@ -21,9 +21,11 @@ double HeuristicCalculator::Calculate(Game* game, char player, char opponent)
 {
 	InitializeReferenceValues(game);
 
+    // calculate the value of the game state from each player's perspective
 	double playerValue = CalculatePlayerValues(game, player, opponent);
 	double opponentValue = CalculatePlayerValues(game, opponent, player);
             
+    // return the difference, to indicate the 'normalized' value from player's perspective
 	return playerValue - opponentValue;
 }
 
@@ -64,7 +66,8 @@ double HeuristicCalculator::CalculateCellValue(Game* game, int row, int column, 
 	if((*game->GetBoard())[row][column] == opponent)
 		return result;
 
-	// calculate the cell's value in all 4 directions
+	// calculate the cell's value in all 4 directions; if we find a win
+    // at any point in the calculations, short-circuit and return the value
 	result += CalculateNorthSouthValue(game, row, column, player, opponent);
 	if(result >= _winValue) return result;
 	result += CalculateEastWestValue(game, row, column, player, opponent);
@@ -88,12 +91,15 @@ double HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int colu
 	int lostPieces = 0;
 	bool blocked = false;
 
+    // look to the left and right of the cell based on the required pieces to win
 	for (int c = max(column - (piecesToWin - 1), 0); c <= min(columns - piecesToWin, column); c++)
 	{
+        // reset the iteration values on each pass
 		blocked = false;
 		ownedPieces = 0;
 		lostPieces = 0;
 
+        // at each location, go through all the 'required' slots
 		for (int offset = 0; offset < piecesToWin; offset++)
 		{
 			char cellState = (*board)[row][c + offset];
@@ -114,6 +120,9 @@ double HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int colu
 			}
 		}
 
+        // if a potential win wasn't blocked this pass by an opponent's piece,
+        // return a win if that's the case, otherwise calculate a value
+        // based on how many pieces are held in this pass
 		if (!blocked)
 		{
 			if(ownedPieces >= piecesToWin)
@@ -121,12 +130,13 @@ double HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int colu
 			else
 				grandTotal += (double)(2 ^ ownedPieces);
 		}
+        // otherwise, if there's the potential for blocking an immediate win
+        // by the opponent, indicate that
 		else if (lostPieces == (piecesToWin - 1) && ownedPieces == 1)
 		{
-			// if this is a true block, make its value fall midway between a win, and 1 away from a win
+			// if this is a true block, make its value less than a win, but more than most other states
 			return _blockValue;
 		}
-
 	}
 
 	return grandTotal;
@@ -134,6 +144,7 @@ double HeuristicCalculator::CalculateEastWestValue(Game* game, int row, int colu
 
 double HeuristicCalculator::CalculateSouthEastValue(Game* game, int row, int column, char player, char opponent)
 {
+    // NOTE: see 'CalculateEastWestValue' for details of the algorithm
 	int piecesToWin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();
@@ -194,6 +205,7 @@ double HeuristicCalculator::CalculateSouthEastValue(Game* game, int row, int col
 
 double HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int column, char player, char opponent)
 {
+    // NOTE: see 'CalculateEastWestValue' for details of the algorithm
 	int piecesTowin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();
@@ -249,6 +261,7 @@ double HeuristicCalculator::CalculateNorthSouthValue(Game* game, int row, int co
 
 double HeuristicCalculator::CalculateSouthWestValue(Game* game, int row, int column, char player, char opponent)
 {
+    // NOTE: see 'CalculateEastWestValue' for details of the algorithm
 	int piecesToWin = game->GetPiecesToWin();
 	int rows = game->GetRows();
 	int columns = game->GetColumns();

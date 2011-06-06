@@ -35,14 +35,19 @@ int GameStateEvaluator::EvaluateHorizontal(Game* game)
 	int myCount;
 	int opponentCount;
 
+    // iterate over the rows, counting pieces by state
 	for (int r = 0; r < game->GetRows(); r++)
 	{
 		// reset counters for each row
 		myCount = 0;
 		opponentCount = 0;
 
+        // iterate over the columns
 		for (int c = 0; c < game->GetColumns(); c++)
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[r][c])
 			{
 			case ME:
@@ -76,6 +81,9 @@ int GameStateEvaluator::EvaluateVertical(Game* game)
 
 		for (int r = 0; r < game->GetRows(); r++)
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[r][c])
 			{
 			case ME:
@@ -115,6 +123,9 @@ int GameStateEvaluator::EvaluateSouthEastDiagonal(Game* game)
 
 		while (row < game->GetRows() && column < game->GetColumns())
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[row][column])
 			{
 			case ME:
@@ -147,6 +158,9 @@ int GameStateEvaluator::EvaluateSouthEastDiagonal(Game* game)
 
 		while (row < game->GetRows() && column < game->GetColumns())
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[row][column])
 			{
 			case ME:
@@ -189,6 +203,9 @@ int GameStateEvaluator::EvaluateSouthWestDiagonal(Game* game)
 
 		while (row >= 0 && column < game->GetColumns())
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[row][column])
 			{
 			case ME:
@@ -221,6 +238,9 @@ int GameStateEvaluator::EvaluateSouthWestDiagonal(Game* game)
 
 		while (row >= 0 && column < game->GetColumns())
 		{
+            // count pieces until an opposing player's piece or blank is encountered,
+            // then reset the appropriate counter(s), and start a new count;
+            // if the required number for a win is reached -- return a win
 			switch ((*game->GetBoard())[row][column])
 			{
 			case ME:

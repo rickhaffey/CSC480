@@ -24,7 +24,6 @@ int Game::GetRows()
 	return _rows;
 }
 
-
 int Game::GetColumns()
 {
 	return _columns;

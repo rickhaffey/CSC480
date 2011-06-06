@@ -17,7 +17,6 @@ Player::~Player()
 	delete _game;
 	if(_trainingController != NULL)
 	{
-
 		delete _trainingController;
 	}
 }
@@ -37,6 +36,9 @@ void Player::ReadConfig()
 	cin >> rows >> columns >> pieces2Win >> _turn >> timeLimitSeconds;
 
 	_game = new Game(rows, columns, pieces2Win, timeLimitSeconds);
+
+    // set up a training controller to track game activity;
+    // will be used later for learning
 	_trainingController = new TrainingController(_game);
 }
 
@@ -51,6 +53,7 @@ int Player::ReadMove()
 		_game->AcceptMove(OPPONENT, move);
 		_game->DisplayBoard();
 
+        // track the opponent's move for training
 		_trainingController->AddMove(move);
 
 #if DIAGNOSTICS
@@ -70,9 +73,11 @@ void Player::SendMove()
 {
 	time_t startTime = time(NULL);
 
+    // first, check for 'obvious' moves
 	FirstChancePlayHandler firstChanceHandler;
 	int move = firstChanceHandler.GetFirstChancePlay(_game);
 
+    // if nothing obvious, perform minimax
 	if(move == NO_FIRST_CHANCE_PLAY)
 	{
 		Minimax minimax;
@@ -98,6 +103,7 @@ void Player::ReadGameResult(int code)
 	cin.getline(line, 15); // TODO : why is there a stray line coming through on std in??
 	cin.getline(line, 15);
 
+    // track final result
 	_trainingController->AddGameResult(code, line);
 	_trainingController->Shutdown();
 

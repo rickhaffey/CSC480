@@ -24,10 +24,12 @@ int FirstChancePlayHandler::GetFirstChancePlay(Game* game)
 	{
 		if(game->IsMoveValid(c))
 		{
+            // create a copy of the game state, and apply the move
 			Game* g = new Game(rows, columns, piecesToWin, timeLimitSeconds);
 			g->CopyGameBoard(game);
 			g->AcceptMove(ME, c);
 
+            // check to see if it's a win, and if so, return the column
 			int gameState = evaluator.EvaluateGameState(g);
 			
 			delete g;
@@ -44,10 +46,12 @@ int FirstChancePlayHandler::GetFirstChancePlay(Game* game)
 	{
 		if(game->IsMoveValid(c))
 		{
+            // create a copy of the game state, and apply the move
 			Game* g = new Game(rows, columns, piecesToWin, timeLimitSeconds);
 			g->CopyGameBoard(game);
 			g->AcceptMove(OPPONENT, c);
 
+            // check to see if it's a loss, and if so, return the column (as a block)
 			int gameState = evaluator.EvaluateGameState(g);
 			
 			delete g;

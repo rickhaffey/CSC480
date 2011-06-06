@@ -4,6 +4,9 @@
 
 #define PLAYER_NAME "rihaffey"
 
+// class that is responsible for interacting with the 
+// referee; handles accepting game configuration, tracking
+// opponent moves, selecting a move at the appropriate time, etc
 class Player
 {
 private:
