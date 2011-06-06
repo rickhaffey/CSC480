@@ -6,6 +6,8 @@
 
 using namespace std;
 
+// class responsible for storing game play information to be used
+// as training data
 class TrainingController
 {
 private:
