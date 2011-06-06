@@ -5,6 +5,7 @@ TrainingController::TrainingController(Game* game)
 {
 #if TRAINING
   char filename[30];
+  //sprintf(filename,".\\training_data\\c4run_%d.training",time(NULL));
   sprintf(filename,"c4run_%d.training",time(NULL));
   _file = new ofstream(filename, ios::out);
 #endif
