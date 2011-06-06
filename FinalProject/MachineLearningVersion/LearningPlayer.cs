@@ -122,15 +122,39 @@ namespace MachineLearningVersion
         {
             // look through knowledge base to find a matching entry (up to our current point)
             List<GameDetail> matches = _knowledgeBase.FindAll(gd => gd.PlaySequence.StartsWith(_currentSequence));
-            matches.Sort(SortMatches);
+
+            int[] values = new int[Game.COLUMNS];
+            for (int c = 0; c < Game.COLUMNS; c++)
+            {
+                values[c] = 0;
+                
+                foreach (GameDetail gd in matches)
+                {
+                    if (c == GetNextMoveColumn(gd.PlaySequence, _currentSequence))
+                    {
+                        if (gd.Result == GameStates.WinMe)
+                            values[c]++;
+                        else if (gd.Result == GameStates.WinOpponent)
+                            values[c]--;
+                    }
+
+                }
+            }
+
+            Console.Error.WriteLine("{0} matches starting with '{1}' found in the knowledge base", matches.Count, _currentSequence);            
             
             // if no match, return a random valid move
-            if(matches.Count == 0)
+            if (matches.Count == 0)
+            {
+                Console.Error.WriteLine("no matches found, returning a random valid column");
                 return GetRandomValidColumn(_game, new List<int> { 0, 1, 2, 3, 4, 5, 6 });
+            }
 
             // if best historical play on record has more losses than wins, play a random column out of columns not recorded in KB
-            if (matches[0].Value <= 0)
-            { 
+            if (values.ToList().Max() <= 0)
+            {
+                Console.Error.WriteLine("best match has more losses than wins, searching for an unplayed column");
+
                 // first, collect all the columns that have been tried in this scenario
                 List<int> columns = new List<int>();
                 foreach (GameDetail gd in matches)
@@ -144,19 +168,37 @@ namespace MachineLearningVersion
                 choices.RemoveAll(c => columns.Contains(c));
 
                 // if we have losses with all option columns at this point, just choose a random value
-                if(choices.Count == 0)
+                if (choices.Count == 0)
+                {
                     choices = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
+                    Console.Error.WriteLine("no unplayed columns, returning a random valid column");
+                }
+                else
+                {
+                    Console.Error.WriteLine("returning a random unplayed column");
+                }
 
                 return GetRandomValidColumn(_game, choices);
             }
 
             // otherwise, pick the column that has shown the best win history (highest diff between wins and losses && lowest loss count)
-            foreach (GameDetail detail in matches)
-            { 
-                int move = GetNextMoveColumn(detail.PlaySequence, _currentSequence);
-                if(_game.IsMoveValid(move)) return move;
+            List<int> valueList = values.ToList();
+
+            while (valueList.Count > 0)
+            {
+                int move = valueList.IndexOf(valueList.Max());
+                if (_game.IsMoveValid(move))
+                {
+                    Console.Error.WriteLine("returning the column with the best win history");
+                    return move;
+                }
+                else
+                {
+                    valueList.RemoveAt(move);
+                }
             }
 
+            // if we _still_ don't have an option, just choose randomly
             return GetRandomValidColumn(_game, new List<int> { 0, 1, 2, 3, 4, 5, 6 });
         }
 
@@ -186,7 +228,7 @@ namespace MachineLearningVersion
         }
 
         private int SortMatches(GameDetail lhs, GameDetail rhs)
-        {
+        {            
             return lhs.Value.CompareTo(rhs.Value);
         }
     }

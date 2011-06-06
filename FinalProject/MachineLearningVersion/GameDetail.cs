@@ -19,17 +19,19 @@ namespace MachineLearningVersion
 
             string result = reader.ReadLine();
             if (result == "-1")
-                Wins++;
+                Result = GameStates.WinMe;
             else if (result == "-2")
-                Losses++;
+                Result = GameStates.WinOpponent;
             else if (result == "-3")
-                Draws++;
+                Result = GameStates.Draw;
 
             reader.Close();
         }
 
         public string PlaySequence { get; set; }
-        
+
+
+        public GameStates Result { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }
         public int Draws { get; set; }
