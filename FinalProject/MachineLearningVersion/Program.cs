@@ -14,6 +14,7 @@ namespace MachineLearningVersion
         static void Main(string[] args)
         {
             LearningPlayer p = new LearningPlayer();
+            //RandomPlayer p = new RandomPlayer();
 
             // send player identification to the referee
             p.SendName();
@@ -22,7 +23,7 @@ namespace MachineLearningVersion
             // {#rows} {#columns} {#pieces2win} {turn [0 1]} {timeLimitSeconds}
             p.ReadConfig();
 
-            // if our turn is '0', send the first move
+            //// if our turn is '0', send the first move
             bool sendMove = (p.GetTurn() == 0);
 
             int gameResultCode = 0;

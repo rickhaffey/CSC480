@@ -29,7 +29,7 @@ namespace MachineLearningVersion
 
             foreach (GameDetail gd in _knowledgeBase)
             {
-                Console.WriteLine(gd.PlaySequence);
+                //Console.WriteLine(gd.PlaySequence);
             }
         }
 
@@ -52,7 +52,7 @@ namespace MachineLearningVersion
                 }
                 catch (InvalidTrainingFileException)
                 {
-                    Console.WriteLine("Skipping invalid training file: {0}", file);
+                    //Console.WriteLine("Skipping invalid training file: {0}", file);
                 }
             }
         }
@@ -77,9 +77,14 @@ namespace MachineLearningVersion
             // file format would have to change (rather than concat directly, columns would need to be delimited, etc.)
         }
 
+        public int GetTurn()
+        {
+            return 0;
+        }
+
         public void SendMove()
         {
-            int move = GetTurn();
+            int move = GetMove();
 
             _game.AcceptMove('x', move);
             _currentSequence += move.ToString();
@@ -113,7 +118,7 @@ namespace MachineLearningVersion
             _writer.Close();
         }
 
-        public int GetTurn()
+        public int GetMove()
         {
             // look through knowledge base to find a matching entry (up to our current point)
             List<GameDetail> matches = _knowledgeBase.FindAll(gd => gd.PlaySequence.StartsWith(_currentSequence));
@@ -138,11 +143,21 @@ namespace MachineLearningVersion
                 List<int> choices = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
                 choices.RemoveAll(c => columns.Contains(c));
 
+                // if we have losses with all option columns at this point, just choose a random value
+                if(choices.Count == 0)
+                    choices = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
+
                 return GetRandomValidColumn(_game, choices);
             }
 
             // otherwise, pick the column that has shown the best win history (highest diff between wins and losses && lowest loss count)
-            return GetNextMoveColumn(matches[0].PlaySequence, _currentSequence);
+            foreach (GameDetail detail in matches)
+            { 
+                int move = GetNextMoveColumn(detail.PlaySequence, _currentSequence);
+                if(_game.IsMoveValid(move)) return move;
+            }
+
+            return GetRandomValidColumn(_game, new List<int> { 0, 1, 2, 3, 4, 5, 6 });
         }
 
         private int GetNextMoveColumn(string detailSequence, string currentSequence)

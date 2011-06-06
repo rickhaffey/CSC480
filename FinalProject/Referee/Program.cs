@@ -8,11 +8,12 @@ namespace Referee
 {
     class Program
     {
-        const string EXE_FILE_NAME = @"C:\Work\CSC480\FinalProject\rihaffey\Debug\rihaffey.exe";
+        const string MINIMAX_EXE_FILENAME = @"C:\Work\CSC480\FinalProject\rihaffey\Debug\rihaffey.exe";
+        const string ML_EXE_FILENAME = @"C:\Work\CSC480\FinalProject\MachineLearningVersion\bin\Debug\MachineLearningVersion.exe";
 
         static void Main(string[] args)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 100; i++)
             {
                 RunGame();
             }
@@ -94,7 +95,7 @@ namespace Referee
 
         static void DisplayMessageGreen(string message)
         {
-            DisplayMessage(message, ConsoleColor.DarkGreen);
+            //DisplayMessage(message, ConsoleColor.DarkGreen);
         }
 
         static void DisplayMessageRed(string message)
@@ -119,7 +120,8 @@ namespace Referee
         {
             // start up the ai player
             string arguments = "";
-            ProcessStartInfo si = new ProcessStartInfo(EXE_FILE_NAME, arguments);
+            ProcessStartInfo si = new ProcessStartInfo(ML_EXE_FILENAME, arguments);
+            //ProcessStartInfo si = new ProcessStartInfo(MINIMAX_EXE_FILENAME, arguments);
             si.UseShellExecute = false;
             si.RedirectStandardOutput = true;
             si.RedirectStandardInput = true;
